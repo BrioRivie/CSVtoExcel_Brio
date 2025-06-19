@@ -67,11 +67,12 @@ The function requires an Azure Storage connection string in `local.settings.json
 - Python 3.8 or later
 - Azure Functions Core Tools
 - Visual Studio Code with Azure Functions extension
-
+- Azure Storage Explorer
+  
 ### Running Locally
 
 1. Clone this repository
-2. Create a virtual environment: `python -m venv .venv`
+2. Create a virtual environment: `python -m venv .venv` (recommended to use virtual env, but I did not)
 3. Activate the virtual environment:
    - Windows: `.venv\Scripts\activate`
    - Linux/MacOS: `source .venv/bin/activate`
@@ -81,10 +82,12 @@ The function requires an Azure Storage connection string in `local.settings.json
 ### Testing
 
 To test the function locally:
-1. Set up Azurite for local blob storage emulation
-2. Upload CSV files to the local blob storage container
-3. Verify Excel files are created in the output directory
-
+1. Create a new blob container for the test data
+2. Copy the csvfiles directory from rowinfotool into your test blob container
+3. copy and rename a csv file to use for simulation of adding a file in tests
+4. run 'func start' in your terminal
+5. Open the test blob container in azure storage and add a csv file to csvfiles directory
+6. Check that excelfiles directory was created and has new content added to it as well as all csv files from before, all of these files should be .xlsx extensions
 ## Deployment
 
 ### Deploying to Azure
