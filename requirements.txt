@@ -1,0 +1,7 @@
+azure-functions
+azure-storage-blob
+pandas
+openpyxl
+xlsxwriter
+python-dateutil
+pytz

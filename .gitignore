@@ -1,0 +1,30 @@
+# Azure Functions artifacts
+bin
+obj
+appsettings.json
+local.settings.json
+__pycache__/
+.python_packages/
+
+# Azurite files
+__azurite_*
+__blobstorage__/
+__queuestorage__/
+AzuriteConfig
+
+# Python virtual environment
+.venv/
+env/
+venv/
+
+# IDE files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Local development configs
+*.log
+.env
+.DS_Store
