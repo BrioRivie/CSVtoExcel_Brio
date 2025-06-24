@@ -82,12 +82,14 @@ The function requires an Azure Storage connection string in `local.settings.json
 ### Testing
 
 To test the function locally:
-1. Create a new blob container for the test data
+1. Create a new blob container for the test data (for me this was testrowinfotool)
 2. Copy the csvfiles directory from rowinfotool into your test blob container
 3. copy and rename a csv file to use for simulation of adding a file in tests
 4. run 'func start' in your terminal
 5. Open the test blob container in azure storage and add a csv file to csvfiles directory
 6. Check that excelfiles directory was created and has new content added to it as well as all csv files from before, all of these files should be .xlsx extensions
+
+
 ## Deployment
 
 ### Deploying to Azure
