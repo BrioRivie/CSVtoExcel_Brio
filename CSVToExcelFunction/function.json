@@ -5,7 +5,7 @@
       "name": "myblob",
       "type": "blobTrigger",
       "direction": "in",
-      "path": "testrowinfotool/csvfiles/{name}",
+      "path": "%BLOB_CONTAINER_NAME%/%CSV_DIRECTORY%/{name}",
       "connection": "AzureWebJobsStorage"
     }
   ]

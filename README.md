@@ -12,50 +12,49 @@ When new CSV files are uploaded to the blob container, this function:
 
 ## Architecture
 
-- **Trigger**: Blob trigger watching the path `testrowinfotool/csvfiles/{name}`
+- **Trigger**: Blob trigger watching the configured path `%BLOB_CONTAINER_NAME%/%CSV_DIRECTORY%/{name}`
 - **Input**: CSV files uploaded to the blob container
 - **Processing**: Converts CSV data to Excel workbooks with appropriate sheet naming
-- **Output**: Excel files stored in the `testrowinfotool/excelfiles/` directory
-
-## Technical Details
-
-### Function Components
-
-- **CSVToExcelFunction/__init__.py**: Contains the main function entry point with blob trigger
-- **CSVToExcelFunction/csv_excel_converter.py**: Utility module that handles the CSV to Excel conversion logic
-- **CSVToExcelFunction/function.json**: Function configuration defining the blob trigger
-
-### Processing Logic
-
-1. When a new CSV file is uploaded to `testrowinfotool/csvfiles/`:
-   - The function is triggered and processes that specific file
-   - It extracts the filename without extension to use for the Excel file
-   - It reads the CSV content and converts it to Excel format
-   - It saves the Excel file to `testrowinfotool/excelfiles/`
-
-2. After processing the triggering file, the function:
-   - Lists all CSV files in the `csvfiles` directory
-   - Lists all Excel files in the `excelfiles` directory
-   - Identifies any CSV files that don't have corresponding Excel files
-   - Processes those CSV files to create missing Excel files
-
-3. Excel processing includes:
-   - Handling sheet name length limitations (Excel's 31 character limit)
-   - Preserving data integrity during conversion
-   - Proper error handling and logging
+- **Output**: Excel files stored in the configured Excel directory
 
 ## Configuration
 
+### Application Settings
+
+The function can be configured with the following environment variables:
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| AzureWebJobsStorage | Storage account connection string (or Key Vault reference) | - |
+| BLOB_CONTAINER_NAME | Name of the blob container | testrowinfotool |
+| CSV_DIRECTORY | Directory within container for CSV files | csvfiles |
+| EXCEL_DIRECTORY | Directory within container for Excel files | excelfiles |
+| KEY_VAULT_URL | Azure Key Vault URL for secrets (optional) | - |
+| STORAGE_SECRET_NAME | Name of the secret in Key Vault for storage connection | AzureWebJobsStorage |
+
+### Azure Key Vault Integration
+
+For production deployments, it's recommended to use Azure Key Vault to store sensitive information like connection strings:
+
+1. Create a Key Vault and add the storage connection string as a secret
+2. Assign a managed identity to your Function App
+3. Grant the Function App identity permission to access secrets in the Key Vault
+4. Configure your Function App with the KEY_VAULT_URL setting
+5. Replace the direct connection string with a Key Vault reference in application settings
+
 ### Local Settings
 
-The function requires an Azure Storage connection string in `local.settings.json`:
+For local development, use `local.settings.json`:
 
 ```json
 {
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "<your-storage-connection-string>",
-    "FUNCTIONS_WORKER_RUNTIME": "python"
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "BLOB_CONTAINER_NAME": "testrowinfotool",
+    "CSV_DIRECTORY": "csvfiles",
+    "EXCEL_DIRECTORY": "excelfiles"
   }
 }
 ```
